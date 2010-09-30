@@ -22,7 +22,7 @@ http.createServer(function (request, response) {
   var url_parts = url.parse(request.url);
   if (url_parts.pathname ==='/') {
     response.writeHead(200, {'Content-Type': 'text/plain'});
-    response.end('gsf');
+    response.end('200');
   } else if (url_parts.pathname ==='/up') {
     if (request.method === 'POST') {
       var body = '';
@@ -47,10 +47,10 @@ http.createServer(function (request, response) {
         }
       });
       response.writeHead(200, {'Content-Type': 'text/plain'});
-      response.end('gsf: posted\n');
+      response.end('200');
     } else {
       response.writeHead(200, {'Content-Type': 'text/plain'});
-      response.end('gsf\n');
+      response.end('200');
     }
   } else {
     response.writeHead(404, {'Content-Type': 'text/plain'});

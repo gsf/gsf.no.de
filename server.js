@@ -5,18 +5,18 @@ var dgram = require('dgram'),
     sys = require('sys'),
     url = require('url');
 
-var socket = dgram.createSocket('unix_dgram');
-var log = function (message) {
-  buffer = new Buffer('node[' + process.pid + ']: ' + message);
-  socket.send(buffer, 0, buffer.length, '/dev/log',
-    function (err, bytes) {
-      if (err) {
-        throw err;
-      }
-    //console.log('Wrote ' + bytes + ' bytes to the socket.');
-    }
-  );
-};
+//var socket = dgram.createSocket('unix_dgram');
+//var log = function (message) {
+//  buffer = new Buffer('node[' + process.pid + ']: ' + message);
+//  socket.send(buffer, 0, buffer.length, '/dev/log',
+//    function (err, bytes) {
+//      if (err) {
+//        throw err;
+//      }
+//    console.log('Wrote ' + bytes + ' bytes to the socket.');
+//    }
+//  );
+//};
 
 http.createServer(function (request, response) {
   var url_parts = url.parse(request.url);
@@ -34,13 +34,13 @@ http.createServer(function (request, response) {
         if (payload.commits.length > 0) {
           for (var i=0; i<payload.commits.length; i++) {
             var commit = payload.commits[i];
-            log('Saw commit ' + commit.id);
+            console.log('Saw commit ' + commit.id);
           }
           //exec("cd /home/zoia/supybot/supybot-plugins; su zoia -c 'git pull'",
           //  function (error, stdout, stderr) {
-          //    log('Pulled: ' + stdout);
+          //    console.log('Pulled: ' + stdout);
           //    if (error !== null) {
-          //      log('Error: ' + error);
+          //      console.log('Error: ' + error);
           //    }
           //  }
           //);
@@ -58,5 +58,5 @@ http.createServer(function (request, response) {
   }
 }).listen(80);
 
-log('Server running');
+console.log('Server running');
 

@@ -1,4 +1,5 @@
 var dgram = require('dgram'),
+    ejs = require('ejs'),
     exec = require('child_process').exec,
     http = require('http'),
     querystring = require('querystring'),
@@ -18,11 +19,27 @@ var dgram = require('dgram'),
 //  );
 //};
 
-http.createServer(function (request, response) {
+var innerTemplate = "Here lies a true\npattern of\n<%= noun %>.";
+var innerContext = {
+  locals: {
+    noun: 'socks'
+  }
+};
+var template = "Hello, <% if (user) { %><%= user.name %>!\n\n<%= inner %><% } else { %>World!<% } %>";
+var context = {
+  locals: {
+    user: {
+      name: 'Bob'
+    },
+    inner: ejs.render(innerTemplate, innerContext)
+  }
+};
+var server = http.createServer(function (request, response) {
   var url_parts = url.parse(request.url);
   if (url_parts.pathname ==='/') {
     response.writeHead(200, {'Content-Type': 'text/plain'});
-    response.end('200');
+    var out = ejs.render(template, context);
+    response.end(out);
   } else if (url_parts.pathname ==='/up') {
     if (request.method === 'POST') {
       var body = '';
@@ -56,7 +73,11 @@ http.createServer(function (request, response) {
     response.writeHead(404, {'Content-Type': 'text/plain'});
     response.end('404');
   }
-}).listen(80);
+})
+
+// TODO: Catch for "Error: EACCES, Permission denied" and give
+// a more helpful message
+server.listen(process.env.NODEPORT || 80);
 
 console.log('Server running');
 

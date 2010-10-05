@@ -1,5 +1,5 @@
 var dgram = require('dgram'),
-    ejs = require('ejs'),
+    ejs = require('./lib/ejs'),
     exec = require('child_process').exec,
     http = require('http'),
     querystring = require('querystring'),
